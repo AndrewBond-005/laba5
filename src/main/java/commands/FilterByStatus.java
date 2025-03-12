@@ -21,16 +21,16 @@ public class FilterByStatus extends Command {
     }
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return;
+            return true;
         }
         try {
             Status status = AskEnum.askEnum(Status.class, console);
             if (status == null) {
                 console.printError("Status не может быть null");
-                return;
+                return true;
             }
             console.println("Вот те Worker, у которых значение поля Status равно" + status);
 
@@ -41,7 +41,10 @@ public class FilterByStatus extends Command {
                 }
             }
         } catch (AskBreak e) {
-            console.println("Отмена создания из-за ввода exit");
+            console.println("Отмена создания из-за ввода " + e.getReport());
+            if (e.getReport().equals(console.getExitWord()))
+                return false;
         }
+        return true;
     }
 }

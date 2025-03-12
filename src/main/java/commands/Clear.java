@@ -14,12 +14,13 @@ public class Clear extends Command {
     }
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return;
+            return true;
         }
         console.println("Очистка коллекции");
         collectionManager.removeAll();
+        return true;
     }
 }

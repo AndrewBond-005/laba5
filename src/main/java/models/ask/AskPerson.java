@@ -1,6 +1,7 @@
 package models.ask;
 
-import commands.UpdateID;
+import commands.Exit;
+//import commands.UpdateID;
 import models.Country;
 import models.EyeColor;
 import models.HairColor;
@@ -18,17 +19,19 @@ public class AskPerson {
             while (true) {
                 console.print("Введите вес weight: ");
                 var line = console.readln().trim();
-                if (line.equals("exit")) throw new AskBreak();
+                if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
+                    throw new AskBreak(line);
+
                 if (line.isEmpty()) {
                     weight = null;
                     break;
                 }
                 try {
-                    if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
-                        weight = UpdateID.worker.getPerson().getWeight();
-                    } else {
+//                    if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
+//                        weight = UpdateID.worker.getPerson().getWeight();
+//                    } else {
                         weight = Double.parseDouble(line);
-                    }
+//                    }
                     if (weight > 0) break;
                     else
                         console.println("Ошибка! Введено отрицательное число!");
@@ -36,7 +39,7 @@ public class AskPerson {
                     console.println("Ошибка! Вес -  положительное число!");
                 }
             }
-            // BackLog.println(String.valueOf(weight));
+            // BackUp.println(String.valueOf(weight));
             EyeColor eyeColor = askEnum(EyeColor.class, console);
             HairColor hairColor = askEnum(HairColor.class, console);
             Country nationality = askEnum(Country.class, console);

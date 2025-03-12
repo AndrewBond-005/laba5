@@ -22,10 +22,10 @@ public class AddIfMax extends Command {
     }
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return;
+            return true;
         }
         try {
             console.println("Добавление нового Worker");
@@ -34,7 +34,7 @@ public class AddIfMax extends Command {
                 if (collectionManager.getCollection().isEmpty()) {
                     collectionManager.add(a);
                     console.println("Worker успешно добавлен");
-                    return;
+                    return true;
                 }
                 Comparator<Worker> comparator = new NameComparator();
                 TreeSet<Worker> workers = new TreeSet<>(comparator);
@@ -49,11 +49,11 @@ public class AddIfMax extends Command {
                     if (Runtime.getRuntime().freeMemory() < 10_000_000) {
                         console.println("этого Worker можно добавить в коллекцию.");
                         console.printError("Добавление может привести к переполнению памяти и вылету программы.");
-                        return;
+                        return true;
                     }
                     collectionManager.add(a);
                     console.println("Worker успешно добавлен");
-                    return;
+                    return true;
                 }
                 console.println("Worker не добавлен. Он меньше максимального");
                 console.println(maxi);
@@ -62,8 +62,11 @@ public class AddIfMax extends Command {
                         ((a != null) ? (a.validate()) : "он равен null"));
             }
         } catch (AskBreak e) {
-            console.println("Отмена создания из-за ввода exit");
+            console.println("Отмена создания из-за ввода " + e.getReport());
+            if (e.getReport().equals(console.getExitWord()))
+                return false;
         }
+        return true;
     }
 
     public static class NameComparator implements Comparator<Worker> {

@@ -2,5 +2,5 @@ package commands;
 
 public interface Executable {
 
-    void execute(String arguments);
+    boolean execute(String arguments);
 }

@@ -14,7 +14,7 @@ public class ExecuteScript extends Command {
     private final Console console;
     private final CommandManager commandManager;
     private HashMap<String, Integer> map = new HashMap<>();
-    private boolean exit = false;
+    private boolean stop = false;
 
     public ExecuteScript(Console console, CollectionManager collectionManager, CommandManager commandManager) {
         super("execute_script file_name", "считать и исполнить скрипт из указанного файла. В скрипте" +
@@ -29,34 +29,31 @@ public class ExecuteScript extends Command {
         if (arguments == null || arguments.isEmpty() || arguments.equals(" ")) {
             console.print("Введите название скрипта: ");
             name = console.readln().trim();
-            try {
-                if (name.equals("exit")) {
-                    throw new AskBreak();
-                }
-            } catch (AskBreak | NullPointerException e) {
-                throw new RuntimeException(e);
-            }
         }
         return name;
     }
-
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         var name = enterScriptName(arguments);
+        if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord())) {
+            console.println("Отмена создания из-за ввода " + arguments);
+            return false;
+        }
         map.put(name, 1);
         console.println("Начинается выполнение скрипта " + name);
         try (Scanner scriptScanner = new Scanner(new File(name))) {
             if (!scriptScanner.hasNextLine()) throw new NoSuchElementException();
             console.setFileScanner(scriptScanner);
-            //exit = false;/////////
-            while (console.isCanReadln() && !exit) {
+            //exit = false;///////
+            // убрать комментарии чтобы выходить только из скрипта,
+            // где написана эта строчка
+            while (console.isCanReadln() && !stop) {
                 var line = console.readln().trim();
                 String[] tokens = line.split(" ", 2);
                 var command = commandManager.getCommands().get(tokens[0]);
-                if (tokens[0].equals("exit") || tokens[0].equals("^D") || tokens[0].equals("^C")) {
-                    exit = true;
-                    console.println("Выход из скрипта...");
-                    return;
+                if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord())) {
+                    console.println("Отмена создания из-за ввода " + arguments);
+                    return false;
                 }
                 if (command == null) {
                     console.printError("Команды " + tokens[0] + " не обнаружено.");
@@ -76,17 +73,18 @@ public class ExecuteScript extends Command {
                 if (map.containsKey(tokens[1])) {
                     console.printError("ОБНАРУЖЕНА РЕКУРСИЯЯЯ!!!!");
                     console.selectConsoleScanner();
-                    console.println("Вы хотите игнорировать команду, вызывающую рекурсию(ignore) " +
-                            "или заврешить работу скрипта(exit)");
+                    console.println("Если вы хотите игнорировать команду," +
+                            " вызывающую рекурсию, введите(ignore)");
 
                     var word = console.readln().trim();
                     if (!word.equals("ignore")) {
-                        exit = true;
+                        stop = true;
                         console.println("Выход из скрипта...");
                     }
                 } else command.execute(tokens[1]);
                 console.setFileScanner(scriptScanner);
             }
+            return true;
         } catch (FileNotFoundException exception) {
             console.printError("Файл со скриптом не найден!");
         } catch (NoSuchElementException exception) {
@@ -98,6 +96,7 @@ public class ExecuteScript extends Command {
             console.selectConsoleScanner();
             map.remove(name);
         }
+        return true;
     }
 }
 

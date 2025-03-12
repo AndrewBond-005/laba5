@@ -1,6 +1,7 @@
 package commands;
 
 import managers.CollectionManager;
+import utility.BackUp;
 import utility.Console;
 
 
@@ -15,13 +16,15 @@ public class Save extends Command {
     }
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
             //console.print(arguments);
-            return;
+            return true;
         }
         collectionManager.saveCollection();
+        BackUp.clear();///////
+        return true;
     }
 
 }

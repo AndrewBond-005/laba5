@@ -1,6 +1,7 @@
 package utility;
 
 import managers.CommandManager;
+import models.ask.AskBreak;
 
 import java.util.NoSuchElementException;
 
@@ -17,8 +18,10 @@ public class Execute {
         try {
             var currentDate = System.currentTimeMillis();
             while (true) {
+                //console.println("Время"+(System.currentTimeMillis() - currentDate));
+                //формат вывода времени выполнения
                 console.printError(System.currentTimeMillis() - currentDate);
-                BackLog.clear();
+                //BackUp.clear();///////
                 console.print("Введите следующую команду: ");
                 var line = console.readln().trim();
 
@@ -26,20 +29,22 @@ public class Execute {
                 var command = commandManager.getCommands().get(tokens[0]);
                 currentDate = System.currentTimeMillis();
                 if (command != null) {
-                    command.execute(tokens.length > 1 ? tokens[1] : null);
+                    if(!command.execute(tokens.length > 1 ? tokens[1] : null)){
+                     commandManager.getCommands().get("exit").execute(null);
+                    }
 //                    if(tokens.length > 1){
-//                        BackLog.println(tokens[0]);
-//                        BackLog.println(tokens[1]);
+//                        BackUp.println(tokens[0]);
+//                        BackUp.println(tokens[1]);
 //                        command.execute(tokens[1]);
 //                    }
 //                    else{
-//                        BackLog.println(tokens[0]);
+//                        BackUp.println(tokens[0]);
 //                        command.execute(null);
 //                    }
                 } else {
                     console.printError("Команды " + tokens[0] + " не обнаружено.");
                 }
-                if (tokens[0].equals("exit"))
+                if (line.equals("stop"))
                     break;
 //            if (tokens[0].equals("execute_script")){
 //                script();

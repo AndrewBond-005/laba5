@@ -1,6 +1,7 @@
 package models.ask;
 
-import commands.UpdateID;
+import commands.Exit;
+//import commands.UpdateID;
 import utility.Console;
 
 import java.time.LocalDate;
@@ -17,24 +18,25 @@ public class AskDate {
                 console.print("Введите значение даты окончания работы EndDate (Exemple: " +
                         LocalDateTime.now().format(DateTimeFormatter.ISO_DATE) + " or 2025-05-25): ");
                 var line = console.readln().trim();
-                if (line.equals("exit")) throw new AskBreak();
+                if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
+                    throw new AskBreak(line);
                 if (line.isEmpty()) {
                     endDate = null;
                     break;
                 }
                 try {
-                    if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
-                        endDate = UpdateID.worker.getEndDate();
-                    } else {
+//                    if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
+//                        endDate = UpdateID.worker.getEndDate();
+//                    } else {
                         endDate = LocalDate.parse(line, DateTimeFormatter.ISO_DATE);
-                    }
+//                    }
                     break;
                 } catch (DateTimeParseException e) {
                     console.println("Ошибка! Введённая строка не соответсвует формату даты");
 
                 }
             }
-            //BackLog.println(String.valueOf(endDate));
+            //BackUp.println(String.valueOf(endDate));
             return endDate;
         } catch (NoSuchElementException | IllegalStateException e) {
             return null;

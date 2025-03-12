@@ -18,22 +18,23 @@ public class Show extends Command {
 
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
             //console.print(arguments);
-            return;
+            return true;
         }
         console.println("Содержимое коллекции");
         var collection = collectionManager.getCollection();
         if (collection.isEmpty()) {
             console.println("пусто");
-            return;
+            return true;
         }
         for (Worker worker : collection) {
             console.println(worker);
         }
 
+        return true;
     }
 
 }

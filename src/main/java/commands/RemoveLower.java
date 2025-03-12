@@ -22,19 +22,21 @@ public class RemoveLower extends Command {
 
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
 
         int id = 0;
         try {
             if (arguments != null && !arguments.isEmpty() && !arguments.equals(" ")) {
-                if (arguments.equals("exit")) throw new AskBreak();
+                if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord()))
+                    throw new AskBreak(arguments);
                 id = Integer.parseInt(arguments.trim());
             }
         } catch (NumberFormatException | NullPointerException e) {
             console.print("");
         } catch (AskBreak e) {
-            console.println("Отмена создания из-за ввода exit");
-            return;
+            console.println("Отмена создания из-за ввода "+e.getReport());
+            if(e.getReport().equals(console.getExitWord()))
+                return false;
         }
         try {
 
@@ -46,7 +48,8 @@ public class RemoveLower extends Command {
                 while (true) {
                     console.print("Введите id: ");
                     var line = console.readln().trim();
-                    if (line.equals("exit")) throw new AskBreak();
+                    if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
+                        throw new AskBreak(line);
                     try {
                         id = Integer.parseInt(line);
                         if (id > 0) break;
@@ -74,7 +77,10 @@ public class RemoveLower extends Command {
                 }
             }
         } catch (AskBreak e) {
-            console.println("Отмена создания из-за ввода exit");
+            console.println("Отмена создания из-за ввода "+e.getReport());
+            if(e.getReport().equals(console.getExitWord()))
+                return false;
         }
+        return true;
     }
 }

@@ -1,7 +1,15 @@
 package models.ask;
 
 public class AskBreak extends Exception {
-//    public static class AskBreak {
+    private final String report;
+
+    public AskBreak(String report) {
+        this.report = report;
+    }
+    public String getReport() {
+        return report;
+    }
+    //    public static class AskBreak {
 //    }
 
 //

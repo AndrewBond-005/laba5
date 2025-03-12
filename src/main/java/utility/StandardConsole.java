@@ -11,6 +11,14 @@ public class StandardConsole implements Console {
     private static Scanner fileScanner = null;
     private static final Scanner defScanner = new Scanner(System.in);
     private static boolean repeatMode = false;
+    @Override
+    public String getStopWord() {
+        return "stop";
+    }
+    @Override
+    public String getExitWord() {
+        return "exit";
+    }
 
     public void print(Object obj) {
         System.out.print((obj.toString()));
@@ -29,7 +37,7 @@ public class StandardConsole implements Console {
         String s;
         if (isCanReadln()) {
             s = (fileScanner != null ? fileScanner : defScanner).nextLine();
-            BackLog.println(s);
+           // BackUp.println(s);
 
         } else {
             selectConsoleScanner();
@@ -37,8 +45,11 @@ public class StandardConsole implements Console {
                 System.exit(0);
             }
             s = (fileScanner != null ? fileScanner : defScanner).nextLine();
-            BackLog.println(s);
+           // BackUp.println(s);
 
+        }
+        if(fileScanner==null){
+            BackUp.println(s);
         }
         if (repeatMode) println(s);
         return s;

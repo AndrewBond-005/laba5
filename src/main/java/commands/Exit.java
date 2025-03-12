@@ -1,5 +1,6 @@
 package commands;
 
+import utility.BackUp;
 import utility.Console;
 
 
@@ -13,12 +14,15 @@ public class Exit extends Command {
 
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return;
+            return false;
         }
         console.println("Выход из программы");
+        BackUp.remove_last();
+        System.exit(0);
+        return false;
     }
 
 }

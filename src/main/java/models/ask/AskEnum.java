@@ -1,6 +1,7 @@
 package models.ask;
 
-import commands.UpdateID;
+import commands.Exit;
+//import commands.UpdateID;
 import models.Person;
 import models.Worker;
 import utility.Console;
@@ -14,27 +15,29 @@ public class AskEnum {
         while (true) {
             console.print("Введите " + "значение" + " " + param.getSimpleName() + Arrays.toString(param.getEnumConstants()) + ": ");
             var line = console.readln().trim();
-            if (line.equals("exit")) throw new AskBreak();
+            if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
+                throw new AskBreak(line);
             if (!line.isEmpty()) {
-                if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
+//                if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
+//                    try {
+//                        Method method = Worker.class.getMethod("get" + param.getSimpleName());
+//                        //BackUp.println(String.valueOf(method.invoke(UpdateID.worker)));
+//                        return (T) method.invoke(UpdateID.worker);
+//                    } catch (NoSuchMethodException e) {
+//                        try {
+//                            Method method = Person.class.getMethod("get" + param.getSimpleName());
+//                            //BackUp.println(String.valueOf(method.invoke(UpdateID.worker.getPerson())));
+//                            return (T) method.invoke(UpdateID.worker.getPerson());
+//                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
+//                            console.println("Ошибка! Что-то пошло не так");
+//                        }
+//                    } catch (InvocationTargetException | IllegalAccessException e) {
+//                        console.println("Ошибка! Что-то пошло не так");
+//                    }
+//                } else
                     try {
-                        Method method = Worker.class.getMethod("get" + param.getSimpleName());
-                        //BackLog.println(String.valueOf(method.invoke(UpdateID.worker)));
-                        return (T) method.invoke(UpdateID.worker);
-                    } catch (NoSuchMethodException e) {
-                        try {
-                            Method method = Person.class.getMethod("get" + param.getSimpleName());
-                            //BackLog.println(String.valueOf(method.invoke(UpdateID.worker.getPerson())));
-                            return (T) method.invoke(UpdateID.worker.getPerson());
-                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
-                            console.println("Ошибка! Что-то пошло не так");
-                        }
-                    } catch (InvocationTargetException | IllegalAccessException e) {
-                        console.println("Ошибка! Что-то пошло не так");
-                    }
-                } else try {
                     var res = T.valueOf(param, line.toUpperCase());
-                    // BackLog.println(String.valueOf(res));
+                    // BackUp.println(String.valueOf(res));
                     return res;
                 } catch (IllegalArgumentException e) {
                     console.println("Ошибка! Введённае значение " + line.toUpperCase() + " не найдено среди значений " + param.getSimpleName());

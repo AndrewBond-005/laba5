@@ -1,6 +1,6 @@
 package models.ask;
 
-import commands.UpdateID;
+//import commands.UpdateID;
 import models.Coordinates;
 import utility.Console;
 
@@ -13,14 +13,15 @@ public class AskCoordinates {
             while (true) {
                 console.print("Введите первую координату coordinates.x: ");
                 var line = console.readln().trim();
-                if (line.equals("exit")) throw new AskBreak();
+                if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
+                    throw new AskBreak(line);
                 if (!line.isEmpty()) {
                     try {
-                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
-                            x = UpdateID.worker.getCoordinates().getX();
-                        } else {
+//                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
+//                            x = UpdateID.worker.getCoordinates().getX();
+//                        } else {
                             x = Float.parseFloat(line);
-                        }
+//                        }
                         break;
 
                     } catch (NumberFormatException e) {
@@ -28,19 +29,20 @@ public class AskCoordinates {
                     }
                 }
             }
-            //BackLog.println(String.valueOf(x));
+            //BackUp.println(String.valueOf(x));
             Long y;
             while (true) {
                 console.print("Введите вторую координату coordinates.y: ");
                 var line = console.readln().trim();
-                if (line.equals("exit")) throw new AskBreak();
+                if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
+                    throw new AskBreak(line);
                 if (!line.isEmpty()) {
                     try {
-                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
-                            y = UpdateID.worker.getCoordinates().getY();
-                        } else {
+//                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
+//                            y = UpdateID.worker.getCoordinates().getY();
+//                        } else {
                             y = Long.parseLong(line);
-                        }
+//                        }
                         break;
                     } catch (NumberFormatException e) {
                         console.print("Ошибка! Введено не целое число!");
@@ -48,7 +50,7 @@ public class AskCoordinates {
                     }
                 }
             }
-            //BackLog.println(String.valueOf(y));
+            //BackUp.println(String.valueOf(y));
             return new Coordinates(x, y);
         } catch (NoSuchElementException | IllegalStateException e) {
             console.printError("Ошибка чтения");

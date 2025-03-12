@@ -19,11 +19,11 @@ public class PrintFieldAscendingStatus extends Command {
     }
 
     @Override
-    public void execute(String arguments) {
+    public boolean execute(String arguments) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
             //console.print(arguments);
-            return;
+            return true;
         }
         console.println("значения поля status всех элементов в порядке возрастания: ");
 
@@ -37,6 +37,7 @@ public class PrintFieldAscendingStatus extends Command {
 //        for (Worker worker : collection) {
 //            console.println(worker.getStatus());
 //        }
+        return true;
     }
 
     public static class StatusComparator implements Comparator<Worker> {
