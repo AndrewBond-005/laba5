@@ -19,12 +19,12 @@ public class AskEnum {
                 if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
                     try {
                         Method method = Worker.class.getMethod("get" + param.getSimpleName());
-                        //BackLog.println(String.valueOf(method.invoke(UpdateID.worker)));
+                        //BackUp.println(String.valueOf(method.invoke(UpdateID.worker)));
                         return (T) method.invoke(UpdateID.worker);
                     } catch (NoSuchMethodException e) {
                         try {
                             Method method = Person.class.getMethod("get" + param.getSimpleName());
-                            //BackLog.println(String.valueOf(method.invoke(UpdateID.worker.getPerson())));
+                            //BackUp.println(String.valueOf(method.invoke(UpdateID.worker.getPerson())));
                             return (T) method.invoke(UpdateID.worker.getPerson());
                         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
                             console.println("Ошибка! Что-то пошло не так");
@@ -34,7 +34,7 @@ public class AskEnum {
                     }
                 } else try {
                     var res = T.valueOf(param, line.toUpperCase());
-                    // BackLog.println(String.valueOf(res));
+                    // BackUp.println(String.valueOf(res));
                     return res;
                 } catch (IllegalArgumentException e) {
                     console.println("Ошибка! Введённае значение " + line.toUpperCase() + " не найдено среди значений " + param.getSimpleName());

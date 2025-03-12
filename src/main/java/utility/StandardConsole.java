@@ -29,7 +29,7 @@ public class StandardConsole implements Console {
         String s;
         if (isCanReadln()) {
             s = (fileScanner != null ? fileScanner : defScanner).nextLine();
-            BackLog.println(s);
+           // BackUp.println(s);
 
         } else {
             selectConsoleScanner();
@@ -37,8 +37,11 @@ public class StandardConsole implements Console {
                 System.exit(0);
             }
             s = (fileScanner != null ? fileScanner : defScanner).nextLine();
-            BackLog.println(s);
+           // BackUp.println(s);
 
+        }
+        if(fileScanner==null){
+            BackUp.println(s);
         }
         if (repeatMode) println(s);
         return s;

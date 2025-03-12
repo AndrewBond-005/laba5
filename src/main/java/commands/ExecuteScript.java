@@ -48,7 +48,9 @@ public class ExecuteScript extends Command {
         try (Scanner scriptScanner = new Scanner(new File(name))) {
             if (!scriptScanner.hasNextLine()) throw new NoSuchElementException();
             console.setFileScanner(scriptScanner);
-            //exit = false;/////////
+            //exit = false;///////
+            // убрать комментарии чтобы выходить только из скрипта,
+            // где написана эта строчка
             while (console.isCanReadln() && !exit) {
                 var line = console.readln().trim();
                 String[] tokens = line.split(" ", 2);

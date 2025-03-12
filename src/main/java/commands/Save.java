@@ -1,6 +1,7 @@
 package commands;
 
 import managers.CollectionManager;
+import utility.BackUp;
 import utility.Console;
 
 
@@ -22,6 +23,8 @@ public class Save extends Command {
             return;
         }
         collectionManager.saveCollection();
+        BackUp.clear();///////
+        console.println(BackUp.getBackLog());
     }
 
 }

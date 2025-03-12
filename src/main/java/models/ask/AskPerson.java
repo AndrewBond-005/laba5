@@ -36,7 +36,7 @@ public class AskPerson {
                     console.println("Ошибка! Вес -  положительное число!");
                 }
             }
-            // BackLog.println(String.valueOf(weight));
+            // BackUp.println(String.valueOf(weight));
             EyeColor eyeColor = askEnum(EyeColor.class, console);
             HairColor hairColor = askEnum(HairColor.class, console);
             Country nationality = askEnum(Country.class, console);

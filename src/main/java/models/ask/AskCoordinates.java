@@ -28,7 +28,7 @@ public class AskCoordinates {
                     }
                 }
             }
-            //BackLog.println(String.valueOf(x));
+            //BackUp.println(String.valueOf(x));
             Long y;
             while (true) {
                 console.print("Введите вторую координату coordinates.y: ");
@@ -48,7 +48,7 @@ public class AskCoordinates {
                     }
                 }
             }
-            //BackLog.println(String.valueOf(y));
+            //BackUp.println(String.valueOf(y));
             return new Coordinates(x, y);
         } catch (NoSuchElementException | IllegalStateException e) {
             console.printError("Ошибка чтения");

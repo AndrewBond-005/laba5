@@ -1,5 +1,6 @@
 package commands;
 
+import utility.BackUp;
 import utility.Console;
 
 
@@ -19,6 +20,7 @@ public class Exit extends Command {
             return;
         }
         console.println("Выход из программы");
+        BackUp.remove_last();
     }
 
 }

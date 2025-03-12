@@ -2,7 +2,7 @@ import commands.*;
 import managers.CollectionManager;
 import managers.CommandManager;
 import managers.DumpManager;
-import utility.BackLog;
+import utility.BackUp;
 import utility.Execute;
 import utility.StandardConsole;
 import utility.Terminate;
@@ -49,23 +49,31 @@ public class Main {
         commandManager.setCommands(com);
 
         Runtime.getRuntime().addShutdownHook(new Terminate());
-        BackLog.read((ExecuteScript) commandManager.getCommands().get("execute_script"), console);
+        BackUp.read((ExecuteScript) commandManager.getCommands().get("execute_script"), console);
 
         new Execute(commandManager, console).execute();
 
     }
 
 }
+//имя не может быть exit - раскомментриолвать worker_23
+
+//чтобы делать бэкап в виде только незавершённых команд ,то
+// убрать save_26,st.console_43-45
+//добавить execute_21 и st.console_32,40
+
+//формат вывода времени выполнения execute_20,22
+
 
 //        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 //            System.out.println("Завершение программы");
 //            try (FileWriter writer = new FileWriter("back_log.txt")) {
-//                String data = BackLog.getBackLog();
+//                String data = BackUp.getBackLog();
 //                if (data.isEmpty()) {
-//                    System.out.println("Данные в BackLog отсутствуют. Запись в файл не выполнена.");
+//                    System.out.println("Данные в BackUp отсутствуют. Запись в файл не выполнена.");
 //                    return;
 //                }
-//                writer.write(BackLog.getBackLog());
+//                writer.write(BackUp.getBackLog());
 //                writer.flush();
 //                System.out.println("ввод сохранёнв back_log");
 //            } catch (IOException e) {
@@ -76,9 +84,9 @@ public class Main {
 
 //Signal.handle(new Signal("INT"), signal -> {
 //            try (FileWriter writer = new FileWriter("back_log.txt")) {
-//                writer.write(BackLog.getBackLog());
-//                System.out.println(BackLog.getBackLog());
-//                System.out.println("ввод сохранёнв back_log" + BackLog.getBackLog());
+//                writer.write(BackUp.getBackLog());
+//                System.out.println(BackUp.getBackLog());
+//                System.out.println("ввод сохранёнв back_log" + BackUp.getBackLog());
 //            } catch (IOException e) {
 //                System.out.println("не удалось сохранить данные в back_log");
 //            }

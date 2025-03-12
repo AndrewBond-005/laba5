@@ -20,7 +20,7 @@ public class AskWorker {
             while (true) {
                 console.print("Введите имя name: ");
                 name = console.readln().trim();
-                if (name.equals("exit")) throw new AskBreak();
+                ////if (name.equals("exit")) throw new AskBreak();
                 if (name.equals("this") && UpdateID.worker != null) {
                     name = UpdateID.worker.getName();
                 }
@@ -28,7 +28,7 @@ public class AskWorker {
                 else
                     console.print("Имя не может быть пустой строкой!");
             }
-            //BackLog.println(name);
+            //BackUp.println(name);
             Coordinates coordinates = askCoordinates(console);
 
             var creationDate = LocalDateTime.now();
@@ -51,7 +51,7 @@ public class AskWorker {
                 }
             }
 
-            //BackLog.println(String.valueOf(salary));
+            //BackUp.println(String.valueOf(salary));
             LocalDate endDate = askDate(console);
             Position position = askEnum(Position.class, console);
             Status status = askEnum(Status.class, console);
