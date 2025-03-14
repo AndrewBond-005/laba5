@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * точка входа в программу.
+ * Создаются экзмепляры команд и вызывается {@link Execute}
+ */
 public class Main {
     public static void main(String[] args) {
         var console = new StandardConsole();
@@ -29,7 +33,7 @@ public class Main {
                 if (!name.isEmpty()) break;
                 else
                     console.print("Имя не может быть пустой строкой!");
-            }
+           }
         } else {
             name = args[0];
         }

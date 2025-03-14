@@ -1,4 +1,3 @@
 generate 4
-exit
 execute_script r2.txt
 generate 42

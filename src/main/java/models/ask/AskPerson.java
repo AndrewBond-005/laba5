@@ -10,7 +10,21 @@ import java.util.NoSuchElementException;
 
 import static models.ask.AskEnum.askEnum;
 
+/**
+ * Класс для запроса данных о персоне у пользователя
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class AskPerson {
+    /**
+     * Запрашивает у пользователя данные о персоне через консоль
+     *
+     * @param console объект {@link Console} для ввода-вывода
+     * @param scriprtMode флаг режима скрипта (true - скрипт, false - интерактивный режим)
+     * @return объект {@link Person} с введенными данными или null при ошибке
+     * @throws AskBreak если пользователь ввел стоп-слово или слово выхода
+     */
     public static Person askPerson(Console console, boolean scriprtMode) throws AskBreak {
         try {
             Double weight;

@@ -6,7 +6,21 @@ import utility.Console;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Класс для запроса координат у пользователя
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class AskCoordinates {
+    /**
+     * Запрашивает у пользователя координаты через консоль
+     *
+     * @param console объект {@link Console} для ввода-вывода
+     * @param scriprtMode флаг режима скрипта (true - скрипт, false - интерактивный режим)
+     * @return объект {@link Coordinates} с введенными координатами или null при ошибке
+     * @throws AskBreak если пользователь ввел стоп-слово или слово выхода
+     */
     public static Coordinates askCoordinates(Console console, boolean scriprtMode) throws AskBreak {
         try {
             float x;
@@ -20,7 +34,7 @@ public class AskCoordinates {
 //                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
 //                            x = UpdateID.worker.getCoordinates().getX();
 //                        } else {
-                            x = Float.parseFloat(line);
+                        x = Float.parseFloat(line);
 //                        }
                         break;
 
@@ -44,7 +58,7 @@ public class AskCoordinates {
 //                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
 //                            y = UpdateID.worker.getCoordinates().getY();
 //                        } else {
-                            y = Long.parseLong(line);
+                        y = Long.parseLong(line);
 //                        }
                         break;
                     } catch (NumberFormatException e) {

@@ -14,7 +14,22 @@ import static models.ask.AskDate.askDate;
 import static models.ask.AskEnum.askEnum;
 import static models.ask.AskPerson.askPerson;
 
+/**
+ * Класс для запроса данных о работнике у пользователя
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class AskWorker {
+    /**
+     * Запрашивает у пользователя данные о работнике через консоль
+     *
+     * @param console объект {@link Console} для ввода-вывода
+     * @param id идентификатор работника
+     * @param scriprtMode флаг режима скрипта (true - скрипт, false - интерактивный режим)
+     * @return объект {@link Worker} с введенными данными или null при ошибке
+     * @throws AskBreak если пользователь ввел стоп-слово или слово выхода
+     */
     public static Worker askWorker(Console console, int id, boolean scriprtMode) throws AskBreak {
         try {
             String name;

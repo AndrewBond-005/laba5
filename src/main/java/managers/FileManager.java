@@ -1,3 +1,10 @@
+/**
+ * Класс, управляющий загрузкой и сохранением коллекции объектов Worker в файл.
+ * Отвечает за сериализацию и десериализацию данных.
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 package managers;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -14,39 +21,48 @@ import static java.lang.Math.max;
 import static models.Worker.fromArray;
 import static models.Worker.toArray;
 
-
 public class FileManager {
     private final String fileName;
     private final Console console;
 
+    /**
+     * Конструктор FileManager.
+     *
+     * @param fileName имя файла для работы с данными
+     * @param console  объект {@link Console} для вывода сообщений
+     */
     public FileManager(String fileName, Console console) {
         this.fileName = fileName;
         this.console = console;
     }
 
+    /**
+     * Сохраняет коллекцию в файл.
+     *
+     * @param collection коллекция объектов {@link Worker} для записи
+     */
     public void write(Collection<Worker> collection) {
         CSVWriter writer = null;
         File file = new File(fileName);
         if (!file.exists()) {
             console.printError("Файл не существует");
-            console.print("Вы хотите создать новый файл с именем " + fileName + " ?" +
-                    " yes - если да");
+            console.print("Вы хотите создать новый файл с именем " + fileName + " ? yes - если да");
             var line = console.readln().trim().toLowerCase();
             if (line.equals("yes")) {
                 try {
                     if (file.createNewFile())
                         console.println("Файл " + fileName + " успешно создан");
                 } catch (IOException e) {
-                    console.printError("ошибка при создании файла!");
+                    console.printError("Ошибка при создании файла!");
                 }
             }
         }
         if (!file.canRead()) {
-            console.printError("Файл " + fileName + " не досутпен для записи");
+            console.printError("Файл " + fileName + " не доступен для записи");
             return;
         }
         try {
-            var w = new BufferedOutputStream(new FileOutputStream(fileName));//40960
+            var w = new BufferedOutputStream(new FileOutputStream(fileName));
             StringWriter s = new StringWriter();
             writer = new CSVWriter(s);
             int i = 0;
@@ -54,8 +70,6 @@ public class FileManager {
                 i++;
                 writer.writeNext(toArray(worker));
                 if (i >= 5000) {
-                    //console.print(i);
-                    i -= 5000;
                     w.write(s.toString().getBytes());
                     w.flush();
                     s.close();
@@ -70,10 +84,7 @@ public class FileManager {
             s.close();
             w.close();
         } catch (IOException e) {
-            console.printError(("Ошибка сериализации:" + e.getCause().getMessage()));
-            //return null;
-        } catch (NullPointerException e) {
-            console.printError("Файл не найден");
+            console.printError("Ошибка сериализации: " + e.getMessage());
         } finally {
             try {
                 if (writer != null) {
@@ -85,21 +96,26 @@ public class FileManager {
         }
     }
 
+    /**
+     * Загружает коллекцию из файла.
+     *
+     * @param collection коллекция, в которую будут загружены объекты
+     * @return максимальный ID загруженного объекта или -1 в случае ошибки
+     */
     public int read(Collection<Worker> collection) {
         CSVReader reader = null;
         int id = 0;
         File file = new File(fileName);
         if (!file.exists()) {
             console.printError("Файл не существует");
-            console.print("Вы хотите создать новый файл с именем " + fileName + " ?" +
-                    " yes - если да");
+            console.print("Вы хотите создать новый файл с именем " + fileName + " ? yes - если да");
             var line = console.readln().trim().toLowerCase();
             if (line.equals("yes")) {
                 try {
                     if (file.createNewFile())
                         console.println("Файл " + fileName + " успешно создан");
                 } catch (IOException e) {
-                    console.printError("ошибка при создании файла!");
+                    console.printError("Ошибка при создании файла!");
                 }
             }
         }
@@ -111,7 +127,7 @@ public class FileManager {
             console.printError("Файл " + fileName + " пуст!");
             return 0;
         }
-        try (Scanner scanner = new Scanner(new FileInputStream(fileName));) {
+        try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
             StringBuilder stringBuilder = new StringBuilder();
             while (scanner.hasNextLine()) {
                 stringBuilder.append(scanner.nextLine()).append('\n');
@@ -122,22 +138,19 @@ public class FileManager {
             collection.clear();
             HashMap<Integer, Integer> col = new HashMap<>();
             while (res != null) {
-                String str;
-                Worker worker;
                 try {
-                    worker = fromArray(res);
-                    str = worker.validate();
+                    Worker worker = fromArray(res);
+                    String str = worker.validate();
                     if (str.isEmpty()) {
                         if (!col.containsKey(worker.getId())) {
                             collection.add(worker);
                             id = max(id, worker.getId());
                             col.put(worker.getId(), worker.getId());
                         } else {
-                            console.printError("Worker c id = " + worker.getId() + " уже содержится в коллекции");
+                            console.printError("Worker с id = " + worker.getId() + " уже содержится в коллекции");
                         }
                     } else {
-                        console.printError("Элемент не корректен: " + worker + '\n' +
-                                (worker.validate()) + (worker.getPerson().validate()));
+                        console.printError("Элемент не корректен: " + worker + '\n' + worker.validate() + worker.getPerson().validate());
                     }
                 } catch (NullPointerException e) {
                     console.printError("Элемент не корректен: id или salary некорректны");
@@ -145,7 +158,7 @@ public class FileManager {
                 res = reader.readNext();
             }
             if (!collection.isEmpty()) {
-                console.println("Коллекция успешна загружена!");
+                console.println("Коллекция успешно загружена!");
                 return id;
             }
             stringReader.close();
@@ -153,7 +166,6 @@ public class FileManager {
             scanner.close();
         } catch (IOException e) {
             console.printError("Ошибка сериализации:");
-            //return null;
             return -1;
         } finally {
             try {

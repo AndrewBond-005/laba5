@@ -25,7 +25,7 @@ public class Coordinates implements Validatable {
     /**
      * Валидирует правильность полей.
      *
-     * @return true, если все верно, иначе false
+     * @return "", если все верно, иначе не пустую строку с именами полей где некорректные данные
      */
     @Override
     public String validate() {

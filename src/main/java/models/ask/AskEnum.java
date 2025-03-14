@@ -10,7 +10,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * Класс для запроса значения перечисления у пользователя
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class AskEnum {
+    /**
+     * Запрашивает у пользователя значение перечисления через консоль
+     *
+     * @param <T> тип перечисления, наследуемого от {@link Enum}
+     * @param param класс перечисления {@link Class<T>}
+     * @param console объект {@link Console} для ввода-вывода
+     * @param scriprtMode флаг режима скрипта (true - скрипт, false - интерактивный режим)
+     * @return значение перечисления типа T или null при пустом вводе или ошибке
+     * @throws AskBreak если пользователь ввел стоп-слово или слово выхода
+     */
     public static <T extends Enum<T>> T askEnum(Class<T> param, Console console, boolean scriprtMode) throws AskBreak {
         while (true) {
             console.print("Введите " + "значение" + " " + param.getSimpleName() + Arrays.toString(param.getEnumConstants()) + ": ");
@@ -18,24 +34,7 @@ public class AskEnum {
             if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
                 throw new AskBreak(line);
             if (!line.isEmpty()) {
-//                if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
-//                    try {
-//                        Method method = Worker.class.getMethod("get" + param.getSimpleName());
-//                        //BackUp.println(String.valueOf(method.invoke(UpdateID.worker)));
-//                        return (T) method.invoke(UpdateID.worker);
-//                    } catch (NoSuchMethodException e) {
-//                        try {
-//                            Method method = Person.class.getMethod("get" + param.getSimpleName());
-//                            //BackUp.println(String.valueOf(method.invoke(UpdateID.worker.getPerson())));
-//                            return (T) method.invoke(UpdateID.worker.getPerson());
-//                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
-//                            console.println("Ошибка! Что-то пошло не так");
-//                        }
-//                    } catch (InvocationTargetException | IllegalAccessException e) {
-//                        console.println("Ошибка! Что-то пошло не так");
-//                    }
-//                } else
-                    try {
+                try {
                     var res = T.valueOf(param, line.toUpperCase());
                     // BackUp.println(String.valueOf(res));
                     return res;
@@ -49,5 +48,4 @@ public class AskEnum {
             } else return null;
         }
     }
-
 }

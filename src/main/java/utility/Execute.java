@@ -5,15 +5,31 @@ import models.ask.AskBreak;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Класс для выполнения команд в интерактивном режиме
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class Execute {
     private final Console console;
     private final CommandManager commandManager;
 
+    /**
+     * Конструктор класса Execute
+     *
+     * @param commandManager объект {@link CommandManager} для управления командами
+     * @param console объект {@link Console} для ввода-вывода
+     */
     public Execute(CommandManager commandManager, Console console) {
         this.commandManager = commandManager;
         this.console = console;
     }
 
+    /**
+     * Запускает интерактивный режим выполнения команд
+     * <p>Считывает команды из консоли, выполняет их и обрабатывает исключения</p>
+     */
     public void execute() {
         try {
             var currentDate = System.currentTimeMillis();
@@ -30,7 +46,7 @@ public class Execute {
                 currentDate = System.currentTimeMillis();
                 if (command != null) {
                     if(command.execute(tokens.length > 1 ? tokens[1] : null,false)==1){
-                     commandManager.getCommands().get("exit").execute(null,false);
+                        commandManager.getCommands().get("exit").execute(null,false);
                     }
 //                    if(tokens.length > 1){
 //                        BackUp.println(tokens[0]);
@@ -56,5 +72,4 @@ public class Execute {
             console.printError("Непредвиденная ошибка!");
         }
     }
-
 }

@@ -1,3 +1,9 @@
+/**
+ * Класс для создания и управления резервными копиями коллекции
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 package utility;
 
 import commands.ExecuteScript;
@@ -15,14 +21,25 @@ public class BackUp {
     private static String fileName = "back_up.txt";
     private static int startWriteFromLine = 1;
 
+    /**
+     * Устанавливает имя файла для резервного копирования.
+     *
+     * @param fileName имя файла
+     */
     public static void setFileName(String fileName) {
         BackUp.fileName = fileName;
     }
 
+    /**
+     * Приватный конструктор, предотвращающий создание экземпляра утилитарного класса.
+     */
     private BackUp() {
         throw new AssertionError("Попытка создания экземпляров утилитарного класса BackUp");
     }
 
+    /**
+     * Очищает резервную копию.
+     */
     public static void clear() {
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write("");
@@ -33,25 +50,50 @@ public class BackUp {
             System.out.println("ошибка очистки back_up");
         }
     }
-    public static void remove_last(){
-        backLog.remove(backLog.size()-1);
+
+    /**
+     * Удаляет последнюю строку из резервного копирования.
+     */
+    public static void remove_last() {
+        backLog.remove(backLog.size() - 1);
     }
+
+    /**
+     * Добавляет строку в резервную копию с новой строки.
+     *
+     * @param s строка для записи
+     */
     public static void println(String s) {
         backLog.add(s + '\n');
     }
 
+    /**
+     * Добавляет строку в резервную копию без новой строки.
+     *
+     * @param s строка для записи
+     */
     public static void print(String s) {
         backLog.add(s);
     }
 
+    /**
+     * Возвращает список строк резервного копирования.
+     *
+     * @return список строк
+     */
     public static List<String> getBackLog() {
         return backLog;
     }
 
+    /**
+     * Читает резервные данные и восстанавливает выполнение скрипта.
+     *
+     * @param executeScript экземпляр {@link ExecuteScript} для выполнения команд
+     * @param console       консольный интерфейс для взаимодействия с пользователем
+     */
     public static void read(ExecuteScript executeScript, Console console) {
         File file = new File(fileName);
         if (!file.exists()) {
-            //console.printError("Файл " + fileName + " не существует");
             return;
         }
         if (file.length() == 0) {
@@ -73,12 +115,15 @@ public class BackUp {
         startWriteFromLine = 2;
 
         console.setRepeatMode(true);
-        executeScript.execute(fileName,false);
+        executeScript.execute(fileName, false);
         console.setRepeatMode(false);
     }
 
+    /**
+     * Записывает резервные данные в файл.
+     */
     public static void write() {
-        try (FileWriter writer = new FileWriter(fileName,true)) {
+        try (FileWriter writer = new FileWriter(fileName, true)) {
             var arr = getBackLog();
             if (arr.isEmpty()) {
                 System.out.println("Данные в BackUp отсутствуют. Запись в файл не выполнена.");
@@ -89,12 +134,8 @@ public class BackUp {
                 writer.write(line);
             }
             writer.flush();
-            System.out.println("ввод сохранёнв back_up.txt");
+            System.out.println("ввод сохранён в back_up.txt");
         } catch (IOException e) {
             System.out.println("не удалось сохранить данные в back_log.txt");
         }
     }
-    //чтобы делать бэкап в виде только незавершённых команд ,то
-    // убрать save_26,st.console_43-45
-    //добавить execute_21 и st.console_32,40
-}

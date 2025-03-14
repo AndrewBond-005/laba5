@@ -9,21 +9,37 @@ import utility.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Команда для удаления из коллекции всех элементов, превышающих заданный
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class RemoveGreater extends Command {
     private final CollectionManager collectionManager;
     private final Console console;
 
+    /**
+     * Конструктор команды RemoveGreater
+     *
+     * @param console объект {@link Console} для ввода-вывода
+     * @param collectionManager объект {@link CollectionManager} для управления коллекцией
+     */
     public RemoveGreater(Console console, CollectionManager collectionManager) {
         super("remove_greater {element}", "удалить из коллекции все элементы, большие, чем заданный");
         this.collectionManager = collectionManager;
         this.console = console;
     }
 
-
+    /**
+     * Выполняет команду удаления элементов, превышающих заданный
+     *
+     * @param arguments аргументы команды (может содержать id или быть пустым)
+     * @param scriprtMode флаг режима скрипта (true - скрипт, false - интерактивный режим)
+     * @return код выполнения: 0 - успех, 1 - выход, -1 - ошибка в скриптовом режиме
+     */
     @Override
     public int execute(String arguments, boolean scriprtMode) {
-
         int id = 0;
         try {
             if (arguments != null && !arguments.isEmpty() && !arguments.equals(" ")) {
@@ -45,7 +61,6 @@ public class RemoveGreater extends Command {
                 return 1;
         }
         try {
-
             Worker a = null;
             if (id != 0) {
                 a = collectionManager.getById(id);

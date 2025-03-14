@@ -10,38 +10,51 @@ import java.util.Random;
 
 import static java.lang.Math.abs;
 
-
+/**
+ * Команда 'generate'. Добавляет заданное количество случайно сгенерированных элементов в коллекцию.
+ *
+ * @author Bondarenko Andrei
+ * @since 1.0
+ */
 public class Generate extends Command {
     private final CollectionManager collectionManager;
     private final Console console;
 
+    /**
+     * Создает новый экземпляр команды {@link Generate}.
+     *
+     * @param console консоль для взаимодействия с пользователем
+     * @param collectionManager менеджер коллекции для управления элементами
+     */
     public Generate(Console console, CollectionManager collectionManager) {
         super("generate {count}", "добавить новых элементов в коллекцию");
         this.collectionManager = collectionManager;
         this.console = console;
     }
 
-
+    /**
+     * Выполняет команду генерации и добавления заданного количества элементов {@link Worker} в коллекцию.
+     *
+     * @param arguments аргументы команды (количество элементов для генерации, опционально)
+     * @param scriptMode флаг режима выполнения скрипта
+     * @return код завершения: 0 - успех, -1 - ошибка в скрипте
+     */
     @Override
-    public int execute(String arguments, boolean scriprtMode) {
-//        if (arguments != null) {
-//            console.println("Введен лишний аргумент");
-//            return;
-//        }
+    public int execute(String arguments, boolean scriptMode) {
         int count = (int) (1000 * 1000);
         if (arguments != null) {
             try {
                 count = Integer.parseInt(arguments.trim());
             } catch (Exception e) {
                 console.println("Целое число не распознано");
-                if(scriprtMode){
+                if (scriptMode) {
                     return -1;
                 }
                 return 0;
             }
             if (count < 0) {
                 console.println("Введите неотрицательное число или ничего");
-                if(scriprtMode){
+                if (scriptMode) {
                     return -1;
                 }
                 return 0;
@@ -51,20 +64,19 @@ public class Generate extends Command {
         for (int i = 1; i <= count; i++) {
             Worker worker = generateWorker();
             collectionManager.add(worker);
-//            if(!collectionManager.add(worker)){
-//                console.println(i+" "+worker.toString());
-//            }
-//           console.println("Добавлен " + worker.toString());
         }
         console.println(count + " Worker" + " успешно добавлено!");
-
         return 0;
     }
 
+    /**
+     * Генерирует случайный объект {@link Worker} с уникальными атрибутами.
+     *
+     * @return сгенерированный объект {@link Worker}
+     */
     private Worker generateWorker() {
         Random random = new Random();
         int rn = abs(abs(random.nextInt()) + 666);
-        //console.println(rn);
         int letters = (rn % 7) + 3;
         StringBuilder name = new StringBuilder();
         name.append((char) ((rn % 26) + 65));
@@ -96,6 +108,11 @@ public class Generate extends Command {
         return new Worker(id, name.toString(), coordinates, creationDate, salary, endDate, position, status, person);
     }
 
+    /**
+     * Генерирует случайный объект {@link Person} с различными атрибутами.
+     *
+     * @return сгенерированный объект {@link Person}
+     */
     private static Person generatePerson() {
         Random random = new Random();
         var rn = (abs(abs(random.nextInt()) + 666));
@@ -126,18 +143,3 @@ public class Generate extends Command {
         return new Person(weight, eyeColor, hairColor, nationality);
     }
 }
-//private Double weight; //Поле не может быть null, Значение поля должно быть больше 0
-//private EyeColor eyeColor; //Поле может быть null
-//private HairColor hairColor; //Поле может быть null
-//private Country nationality; //Поле не может быть null
-
-
-//private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-//private String name; //Поле не может быть null, Строка не может быть пустой
-//private Coordinates coordinates; //Поле не может быть null
-//private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-//private int salary; //Значение поля должно быть больше 0
-//private LocalDate endDate; //Поле может быть null
-//private Position position; //Поле не может быть null
-//private Status status; //Поле не может быть null
-//private Person person; //Поле не может быть null
