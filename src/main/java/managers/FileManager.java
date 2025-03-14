@@ -15,18 +15,18 @@ import static models.Worker.fromArray;
 import static models.Worker.toArray;
 
 
-public class DumpManager {
+public class FileManager {
     private final String fileName;
     private final Console console;
 
-    public DumpManager(String fileName, Console console) {
+    public FileManager(String fileName, Console console) {
         this.fileName = fileName;
         this.console = console;
     }
 
     public void write(Collection<Worker> collection) {
         CSVWriter writer = null;
-        File file = new File("collection.csv");
+        File file = new File(fileName);
         if (!file.exists()) {
             console.printError("Файл не существует");
             console.print("Вы хотите создать новый файл с именем " + fileName + " ?" +
@@ -46,7 +46,7 @@ public class DumpManager {
             return;
         }
         try {
-            var w = new BufferedOutputStream(new FileOutputStream("collection.csv"));//40960
+            var w = new BufferedOutputStream(new FileOutputStream(fileName));//40960
             StringWriter s = new StringWriter();
             writer = new CSVWriter(s);
             int i = 0;
@@ -88,7 +88,7 @@ public class DumpManager {
     public int read(Collection<Worker> collection) {
         CSVReader reader = null;
         int id = 0;
-        File file = new File("collection.csv");
+        File file = new File(fileName);
         if (!file.exists()) {
             console.printError("Файл не существует");
             console.print("Вы хотите создать новый файл с именем " + fileName + " ?" +
@@ -111,7 +111,7 @@ public class DumpManager {
             console.printError("Файл " + fileName + " пуст!");
             return 0;
         }
-        try (Scanner scanner = new Scanner(new FileInputStream("collection.csv"));) {
+        try (Scanner scanner = new Scanner(new FileInputStream(fileName));) {
             StringBuilder stringBuilder = new StringBuilder();
             while (scanner.hasNextLine()) {
                 stringBuilder.append(scanner.nextLine()).append('\n');
@@ -136,7 +136,8 @@ public class DumpManager {
                             console.printError("Worker c id = " + worker.getId() + " уже содержится в коллекции");
                         }
                     } else {
-                        console.printError("Элемент не корректен: " + worker + '\n' + (worker.validate()) + (worker.getPerson().validate()));
+                        console.printError("Элемент не корректен: " + worker + '\n' +
+                                (worker.validate()) + (worker.getPerson().validate()));
                     }
                 } catch (NullPointerException e) {
                     console.printError("Элемент не корректен: id или salary некорректны");
@@ -166,53 +167,3 @@ public class DumpManager {
         return 0;
     }
 }
-//    public static String collection2CSV(Collection<Worker> collection) {
-//        CSVWriter writer =null;
-//        try {
-//            FileWriter outputfile = new FileWriter("collecion.csv");
-//            writer = new CSVWriter(outputfile);
-//            for (Worker worker : collection) {
-//                writer.writeNext(toArray(worker));
-//            }
-//            writer.close();
-//            return outputfile.toString();
-//        } catch (IOException e) {
-//            console.printError(("Ошибка сериализации:" + e.getCause().getMessage()));
-//            return null;
-//        } catch (NullPointerException e) {
-//            console.printError("Файл не найден");
-//            return null;
-//        } finally {
-//            try {
-//                if (writer != null) {
-//                    writer.close();
-//                }
-//            } catch (IOException e) {
-//                console.printError("Ошибка закрытия файла");
-//            }
-//        }
-//    }
-//}
-//        try {
-//            StringWriter sw = new StringWriter();
-//            CSVWriter csvWriter = new CSVWriter(sw, ';');
-//            for (var e : collection) {
-//                csvWriter.writeNext(Worker.toArray(e));
-//            }
-//            String csv = sw.toString();
-//            return csv;
-//        } catch (Exception e) {
-//            System.out.println("Ошибка сериализации");
-//            return null;
-//        }
-
-//    public void writeCollection(Collection<Worker> collection) {
-//
-//    }
-//
-//    private TreeSet<Worker> CSV2collection(String s) {
-//
-//    }
-//    public void readCollection(Collection<Worker> collection) {
-//
-//    }

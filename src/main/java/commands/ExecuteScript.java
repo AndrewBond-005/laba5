@@ -2,9 +2,9 @@ package commands;
 
 import managers.CollectionManager;
 import managers.CommandManager;
-import models.ask.AskBreak;
 import utility.Console;
 
+import javax.swing.plaf.IconUIResource;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -32,14 +32,23 @@ public class ExecuteScript extends Command {
         }
         return name;
     }
+
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         var name = enterScriptName(arguments);
         if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord())) {
             console.println("Отмена создания из-за ввода " + arguments);
-            return false;
+            return 1;
         }
-        map.put(name, 1);
+        if (map.get(name) == null) {
+            map.put(name, 1);
+        } else {
+            map.put(name, map.get(name) + 1);
+        }
+        if(map.get(name)> commandManager.getMaxRecurtionDeep()){
+            console.println("Достигнут лимит глубины рекурсиии.");
+            return 1;
+        }
         console.println("Начинается выполнение скрипта " + name);
         try (Scanner scriptScanner = new Scanner(new File(name))) {
             if (!scriptScanner.hasNextLine()) throw new NoSuchElementException();
@@ -53,7 +62,7 @@ public class ExecuteScript extends Command {
                 var command = commandManager.getCommands().get(tokens[0]);
                 if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord())) {
                     console.println("Отмена создания из-за ввода " + arguments);
-                    return false;
+                    return 1;
                 }
                 if (command == null) {
                     console.printError("Команды " + tokens[0] + " не обнаружено.");
@@ -61,7 +70,14 @@ public class ExecuteScript extends Command {
                 }
 
                 if (!tokens[0].equals("execute_script")) {
-                    command.execute(tokens.length > 1 ? tokens[1] : null);
+                    int s = command.execute(tokens.length > 1 ? tokens[1] : null, true);
+                    // System.out.println(s);
+                    if (s == 1) {
+                        commandManager.getCommands().get("exit").execute(null, true);
+                    }
+                    if (s == -1) {
+                        return -1;
+                    }
                     continue;
                 }
                 if (tokens.length == 1) {
@@ -70,21 +86,30 @@ public class ExecuteScript extends Command {
                     tokenList.add(script);
                     tokens = tokenList.toArray(new String[0]);
                 }
-                if (map.containsKey(tokens[1])) {
-                    console.printError("ОБНАРУЖЕНА РЕКУРСИЯЯЯ!!!!");
-                    console.selectConsoleScanner();
-                    console.println("Если вы хотите игнорировать команду," +
-                            " вызывающую рекурсию, введите(ignore)");
 
-                    var word = console.readln().trim();
-                    if (!word.equals("ignore")) {
-                        stop = true;
-                        console.println("Выход из скрипта...");
+
+                if (map.containsKey(tokens[1])) {
+//                    console.printError("ОБНАРУЖЕНА РЕКУРСИЯЯЯ!!!!");
+//                    console.selectConsoleScanner();
+//                    console.println("Если вы хотите игнорировать команду," +
+//                            " вызывающую рекурсию, введите(ignore)");
+//
+//                    var word = console.readln().trim();
+//                    if (!word.equals("ignore")) {
+//                        stop = true;
+//                        console.println("Выход из скрипта...");
+//                    }
+                } else {
+                    if (command.execute(tokens.length > 1 ? tokens[1] : null, true) == 1) {
+                        commandManager.getCommands().get("exit").execute(null, true);
                     }
-                } else command.execute(tokens[1]);
+                    if (command.execute(tokens.length > 1 ? tokens[1] : null, true) == -1) {
+                        return 0;
+                    }
+                }
                 console.setFileScanner(scriptScanner);
             }
-            return true;
+            return 0;
         } catch (FileNotFoundException exception) {
             console.printError("Файл со скриптом не найден!");
         } catch (NoSuchElementException exception) {
@@ -96,7 +121,7 @@ public class ExecuteScript extends Command {
             console.selectConsoleScanner();
             map.remove(name);
         }
-        return true;
+        return 0;
     }
 }
 

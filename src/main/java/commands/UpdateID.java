@@ -18,11 +18,14 @@ public class UpdateID extends Command {
     }
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         try {
             int id = 0;
             try {
                 if (arguments == null || arguments.isEmpty() || arguments.equals(" ")) {
+                    if(scriprtMode){
+                        return -1;
+                    }
                     console.println("Введите id: ");
                     arguments = console.readln().trim();
                     if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord()))
@@ -30,11 +33,14 @@ public class UpdateID extends Command {
                 }
                 id = Integer.parseInt(arguments.trim());
             } catch (NumberFormatException e) {
+                if(scriprtMode){
+                    return -1;
+                }
                 console.println("ID не распознан");
-                return true;
+                return 0;
             }
             worker = collectionManager.getById(id);
-            var w = AskWorker.askWorker(console, id);
+            var w = AskWorker.askWorker(console, id,scriprtMode);
             if (w != null) {
                 collectionManager.update(w);
             }
@@ -43,9 +49,12 @@ public class UpdateID extends Command {
             worker = null;
         } catch (AskBreak e) {
             console.println("Отмена создания из-за ввода "+e.getReport());
+            if(scriprtMode){
+                return -1;
+            }
             if(e.getReport().equals(console.getExitWord()))
-                return false;
+                return 1;
         }
-        return true;
+        return 0;
     }
 }

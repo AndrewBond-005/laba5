@@ -16,15 +16,15 @@ public class Save extends Command {
     }
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
             //console.print(arguments);
-            return true;
+            return 0;
         }
         collectionManager.saveCollection();
         BackUp.clear();///////
-        return true;
+        return 0;
     }
 
 }

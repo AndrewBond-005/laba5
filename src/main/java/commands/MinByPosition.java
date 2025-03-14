@@ -16,20 +16,20 @@ public class MinByPosition extends Command {
     }
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
             //console.print(arguments);
-            return true;
+            return 0;
         }
         var workers = collectionManager.getCollection();
         for (Worker worker : workers) {
             if (worker.getPosition().ordinal() == 0) {
                 console.println(worker);
-                return true;
+                return 0;
             }
         }
-        return true;
+        return 0;
     }
 
 }

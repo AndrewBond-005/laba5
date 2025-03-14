@@ -1,7 +1,5 @@
 package models.ask;
 
-import commands.Exit;
-//import commands.UpdateID;
 import models.Country;
 import models.EyeColor;
 import models.HairColor;
@@ -13,7 +11,7 @@ import java.util.NoSuchElementException;
 import static models.ask.AskEnum.askEnum;
 
 public class AskPerson {
-    public static Person askPerson(Console console) throws AskBreak {
+    public static Person askPerson(Console console, boolean scriprtMode) throws AskBreak {
         try {
             Double weight;
             while (true) {
@@ -30,19 +28,25 @@ public class AskPerson {
 //                    if (line.equalsIgnoreCase("this") && UpdateID.worker != null && UpdateID.worker.getPerson() != null) {
 //                        weight = UpdateID.worker.getPerson().getWeight();
 //                    } else {
-                        weight = Double.parseDouble(line);
+                    weight = Double.parseDouble(line);
 //                    }
                     if (weight > 0) break;
-                    else
+                    else {
                         console.println("Ошибка! Введено отрицательное число!");
+                        if (scriprtMode) return null;
+                    }
                 } catch (NumberFormatException e) {
                     console.println("Ошибка! Вес -  положительное число!");
+                    if (scriprtMode) return null;
                 }
             }
             // BackUp.println(String.valueOf(weight));
-            EyeColor eyeColor = askEnum(EyeColor.class, console);
-            HairColor hairColor = askEnum(HairColor.class, console);
-            Country nationality = askEnum(Country.class, console);
+            EyeColor eyeColor = askEnum(EyeColor.class, console, scriprtMode);
+            if (scriprtMode && eyeColor==null) return null;
+            HairColor hairColor = askEnum(HairColor.class, console, scriprtMode);
+            if (scriprtMode && hairColor==null) return null;
+            Country nationality = askEnum(Country.class, console, scriprtMode);
+            if (scriprtMode && nationality==null) return null;
 
             return new Person(weight, eyeColor, hairColor, nationality);
         } catch (NoSuchElementException | IllegalStateException e) {

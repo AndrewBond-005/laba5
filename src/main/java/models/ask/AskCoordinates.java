@@ -7,7 +7,7 @@ import utility.Console;
 import java.util.NoSuchElementException;
 
 public class AskCoordinates {
-    public static Coordinates askCoordinates(Console console) throws AskBreak {
+    public static Coordinates askCoordinates(Console console, boolean scriprtMode) throws AskBreak {
         try {
             float x;
             while (true) {
@@ -26,6 +26,7 @@ public class AskCoordinates {
 
                     } catch (NumberFormatException e) {
                         console.print("Ошибка! Введено не число!");
+                        if (scriprtMode) return null;
                     }
                 }
             }
@@ -36,6 +37,8 @@ public class AskCoordinates {
                 var line = console.readln().trim();
                 if (line.equals(console.getStopWord()) || line.equals(console.getExitWord()))
                     throw new AskBreak(line);
+                if (scriprtMode) return null;
+
                 if (!line.isEmpty()) {
                     try {
 //                        if (line.equalsIgnoreCase("this") && UpdateID.worker != null) {
@@ -46,6 +49,7 @@ public class AskCoordinates {
                         break;
                     } catch (NumberFormatException e) {
                         console.print("Ошибка! Введено не целое число!");
+                        if (scriprtMode) return null;
 
                     }
                 }

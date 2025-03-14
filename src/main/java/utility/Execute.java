@@ -20,7 +20,7 @@ public class Execute {
             while (true) {
                 //console.println("Время"+(System.currentTimeMillis() - currentDate));
                 //формат вывода времени выполнения
-                console.printError(System.currentTimeMillis() - currentDate);
+                //console.printError(System.currentTimeMillis() - currentDate);
                 //BackUp.clear();///////
                 console.print("Введите следующую команду: ");
                 var line = console.readln().trim();
@@ -29,8 +29,8 @@ public class Execute {
                 var command = commandManager.getCommands().get(tokens[0]);
                 currentDate = System.currentTimeMillis();
                 if (command != null) {
-                    if(!command.execute(tokens.length > 1 ? tokens[1] : null)){
-                     commandManager.getCommands().get("exit").execute(null);
+                    if(command.execute(tokens.length > 1 ? tokens[1] : null,false)==1){
+                     commandManager.getCommands().get("exit").execute(null,false);
                     }
 //                    if(tokens.length > 1){
 //                        BackUp.println(tokens[0]);

@@ -67,12 +67,13 @@ public class BackUp {
 
         if (!console.readln().trim().equalsIgnoreCase("yes")) {
             console.setRepeatMode(false);
+            clear();
             return;
         }
         startWriteFromLine = 2;
 
         console.setRepeatMode(true);
-        executeScript.execute(fileName);
+        executeScript.execute(fileName,false);
         console.setRepeatMode(false);
     }
 

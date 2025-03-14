@@ -14,10 +14,10 @@ public class CollectionManager {
     private final LocalDateTime lastInitTime = null;
     private LocalDateTime lastSaveTime = null;
     private final Map<Integer, Worker> workers = new HashMap<>();
-    DumpManager dumpManager = null;
+    FileManager fileManager = null;
 
-    public CollectionManager(DumpManager dumpManager) {
-        this.dumpManager = dumpManager;
+    public CollectionManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     public Worker getById(int id) {
@@ -67,13 +67,13 @@ public class CollectionManager {
     }
 
     public boolean loadCollection() {
-        int id = dumpManager.read(getCollection());
+        int id = fileManager.read(getCollection());
         currentId = ++id;
         return id > 0;
     }
 
     public void saveCollection() {
-        dumpManager.write(getCollection());
+        fileManager.write(getCollection());
         lastSaveTime = LocalDateTime.now();
     }
 }

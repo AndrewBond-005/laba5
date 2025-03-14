@@ -11,7 +11,7 @@ import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 
 public class AskDate {
-    public static LocalDate askDate(Console console) throws AskBreak {
+    public static LocalDate askDate(Console console, boolean scriprtMode) throws AskBreak {
         try {
             LocalDate endDate;
             while (true) {
@@ -33,7 +33,7 @@ public class AskDate {
                     break;
                 } catch (DateTimeParseException e) {
                     console.println("Ошибка! Введённая строка не соответсвует формату даты");
-
+                    if (scriprtMode) return null;
                 }
             }
             //BackUp.println(String.valueOf(endDate));

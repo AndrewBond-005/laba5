@@ -23,7 +23,7 @@ public class Generate extends Command {
 
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
 //        if (arguments != null) {
 //            console.println("Введен лишний аргумент");
 //            return;
@@ -34,11 +34,17 @@ public class Generate extends Command {
                 count = Integer.parseInt(arguments.trim());
             } catch (Exception e) {
                 console.println("Целое число не распознано");
-                return true;
+                if(scriprtMode){
+                    return -1;
+                }
+                return 0;
             }
             if (count < 0) {
                 console.println("Введите неотрицательное число или ничего");
-                return true;
+                if(scriprtMode){
+                    return -1;
+                }
+                return 0;
             }
         }
         console.println("Добавление новых " + count + " Worker");
@@ -52,7 +58,7 @@ public class Generate extends Command {
         }
         console.println(count + " Worker" + " успешно добавлено!");
 
-        return true;
+        return 0;
     }
 
     private Worker generateWorker() {

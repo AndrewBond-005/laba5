@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class AskEnum {
-    public static <T extends Enum<T>> T askEnum(Class<T> param, Console console) throws AskBreak {
+    public static <T extends Enum<T>> T askEnum(Class<T> param, Console console, boolean scriprtMode) throws AskBreak {
         while (true) {
             console.print("Введите " + "значение" + " " + param.getSimpleName() + Arrays.toString(param.getEnumConstants()) + ": ");
             var line = console.readln().trim();
@@ -44,6 +44,7 @@ public class AskEnum {
                     if (console.getFileScanner() != null) {
                         return null;
                     }
+                    if (scriprtMode) return null;
                 }
             } else return null;
         }

@@ -14,15 +14,15 @@ public class Exit extends Command {
 
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return false;
+            return 1;
         }
         console.println("Выход из программы");
         BackUp.remove_last();
         System.exit(0);
-        return false;
+        return 1;
     }
 
 }

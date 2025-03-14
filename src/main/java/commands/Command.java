@@ -9,7 +9,7 @@ public abstract class Command implements Describable, Executable {
         this.description = description;
     }
 
-    public abstract boolean execute(String arguments);
+    public abstract int execute(String arguments, boolean scriprtMode);
 
     public String getName() {
         return name;

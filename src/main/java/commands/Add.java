@@ -22,19 +22,19 @@ public class Add extends Command {
 
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
             //console.print(arguments);
-            return true;
+            return 0;
         }
         try {
             console.println("Добавление нового Worker");
             if (Runtime.getRuntime().freeMemory() < 10_000_000) {
                 console.printError("Добавление может привести к переполнению памяти и вылету программы.");
-                return true;
+                return 0;
             }
-            Worker a = AskWorker.askWorker(console, collectionManager.getFreeId());
+            Worker a = AskWorker.askWorker(console, collectionManager.getFreeId(),scriprtMode);
             if (a != null && a.validate().isEmpty()) {
                 collectionManager.add(a);
                 console.println("Worker успешно добавлен");
@@ -42,14 +42,17 @@ public class Add extends Command {
                 console.printError("Worker не добавлен. Введены некорректные занчения полей:" +
                         ((a != null) ? a.validate() : "Worker равен null"));
             }
-            return true;
+            if(a==null && scriprtMode){
+                return -1;
+            }
+            return 0;
         } catch (AskBreak e) {
             console.println("Отмена создания из-за ввода "+e.getReport());
             if(e.getReport().equals(console.getExitWord()))
-                return false;
+                return 1;
 
         }
-        return true;
+        return 0;
     }
 
 }

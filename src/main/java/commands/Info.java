@@ -18,10 +18,10 @@ public class Info extends Command {
 
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return true;
+            return 0;
         }
         LocalDateTime lastInitTime = collectionManager.getLastInitTime();
         String lastInitTimeString = (lastInitTime == null) ? "в данной сессии инициализации еще не происходило" :
@@ -37,7 +37,7 @@ public class Info extends Command {
         console.println(" Дата последнего сохранения: " + lastSaveTimeString);
         console.println(" Дата последней инициализации: " + lastInitTimeString);
 
-        return true;
+        return 0;
     }
 
 }

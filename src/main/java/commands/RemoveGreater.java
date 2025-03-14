@@ -22,7 +22,7 @@ public class RemoveGreater extends Command {
 
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
 
         int id = 0;
         try {
@@ -33,10 +33,16 @@ public class RemoveGreater extends Command {
             }
         } catch (NumberFormatException | NullPointerException e) {
             console.print("");
+            if(scriprtMode){
+                return -1;
+            }
         } catch (AskBreak e) {
             console.println("Отмена создания из-за ввода "+e.getReport());
+            if(scriprtMode){
+                return -1;
+            }
             if(e.getReport().equals(console.getExitWord()))
-                return false;
+                return 1;
         }
         try {
 
@@ -53,16 +59,25 @@ public class RemoveGreater extends Command {
                     try {
                         id = Integer.parseInt(line);
                         if (id > 0) break;
+                        if(scriprtMode){
+                            return -1;
+                        }
                         else console.print(" Введено неположительное число!");
                     } catch (NumberFormatException e) {
                         console.printError("Ошибка! id - целое положительное число!");
+                        if(scriprtMode){
+                            return -1;
+                        }
                     }
                 }
-                a = AskWorker.askWorker(console, id);
+                a = AskWorker.askWorker(console, id,scriprtMode);
             }
             if (a == null || !a.validate().isEmpty()) {
                 console.printError("Введены некорректные занчения полей:" +
                         ((a != null) ? (a.validate()) : "он равен null"));
+                if(scriprtMode){
+                    return -1;
+                }
             } else {
                 List<Worker> workers = new ArrayList<>();
                 var collection = collectionManager.getCollection();
@@ -78,9 +93,12 @@ public class RemoveGreater extends Command {
             }
         } catch (AskBreak e) {
             console.println("Отмена создания из-за ввода "+e.getReport());
+            if(scriprtMode){
+                return -1;
+            }
             if(e.getReport().equals(console.getExitWord()))
-                return false;
+                return 1;
         }
-        return true;
+        return 0;
     }
 }

@@ -16,7 +16,7 @@ public class RemoveById extends Command {
     }
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         try {
             int id = 0;
             if (arguments == null || arguments.isEmpty() || arguments.equals(" ")) {
@@ -24,26 +24,33 @@ public class RemoveById extends Command {
                 arguments = console.readln().trim();
                 if (arguments.equals(console.getStopWord()) || arguments.equals(console.getExitWord())) {
                     console.println("Отмена создания из-за ввода " + arguments);
-                    return false;
+                    if(scriprtMode){
+                        return -1;
+                    }
+                    return 1;
                 }
+                return 0;
             }
             try {
 
                 id = Integer.parseInt(arguments.trim());
             } catch (NumberFormatException e) {
                 console.println("ID не распознан");
-                return true;
+                if(scriprtMode){
+                    return -1;
+                }
+                return 0;
             }
             console.println(collectionManager.getById(id));
             if (!collectionManager.isContain(collectionManager.getById(id)) || collectionManager.getById(id) == null) {
                 console.printError("Worker с таким id не существует");
-                return true;
+                return 0;
             }
             collectionManager.remove(collectionManager.getById(id));
             console.println("Worker с id=" + id + " успешно удалён");
         } catch (RuntimeException e) {
             console.println("Worker с таким id не существует");
         }
-        return true;
+        return 0;
     }
 }

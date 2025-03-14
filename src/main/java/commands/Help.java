@@ -18,16 +18,16 @@ public class Help extends Command {
 
 
     @Override
-    public boolean execute(String arguments) {
+    public int execute(String arguments, boolean scriprtMode) {
         if (arguments != null) {
             console.println("Введен лишний аргумент");
-            return true;
+            return 0;
         }
         Map<String, Command> commands = commandManager.getCommands();
         for (Command command : commands.values()) {
             System.out.printf(" %-35s%-1s%n", command.getName(), command.getDescription());
         }
-        return true;
+        return 0;
     }
 
 }
